@@ -11,52 +11,6 @@ df <- read.csv("merged_all_data_VPD_updated.csv") %>%
   # define pixel to be a unique site indicator
   dplyr::mutate(pixel = as.numeric(as.factor(paste0(latitude, ", ", longitude))))
 
-# helper_functions
-# percent zero vs positive pixels
-zero_perc <- function(var) {
-  group_counts <- table(var)
-  total_count <- sum(group_counts)
-  group_percentages <- (group_counts / total_count) * 100
-  print(group_percentages)
-}
-# correlation coefficient check function
-cor_check <- function(threshold = 0.7, df, var_list) {
-  correlation_matrix <- df %>%
-    dplyr::select(all_of(var_list)) %>%
-    cor(use = "pairwise.complete.obs")
-  correlation_tidy <- as.data.frame(as.table(correlation_matrix)) %>%
-    dplyr::rename(Var1 = Var1, Var2 = Var2, Correlation = Freq) %>%
-    dplyr::filter(Var1 != Var2) %>%
-    dplyr::filter(abs(Correlation) > threshold) %>%
-    dplyr:: mutate(Var1 = as.character(Var1), Var2 = as.character(Var2)) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(pair = paste0(pmin(Var1, Var2), "-", pmax(Var1, Var2))) %>% 
-    dplyr::distinct(pair, .keep_all = TRUE) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(-pair) 
-  # display the significant correlations
-  print(correlation_tidy, n = Inf)
-}
-
-#----------------------------------------------------------------------------------------------------------------------
-# stratify by subregion to get split of zeroes down to 50/50 or some other target
-# ok this dataset appears to only be for one subregion right now, Hangkai is checking
-
-veg_by_pixel <- df %>%
-  dplyr::select(pixel, year, veg_binary) %>%
-  # compute the number of years out of 22 where there is vegetation in each pixel
-  dplyr::group_by(pixel) %>%
-  dplyr::summarize(total_veg = sum(veg_binary)) %>%
-  dplyr::ungroup()
-hist(veg_by_pixel$total_veg, xlab = "years with vegetation", main = "Histogram of years with vegetation across pixels")
-
-zero_perc(df$veg_binary)
-df <- df %>%
-  # merge this back to df by pixel and filter out pixels that only contain 1 year of vegetation
-  dplyr::left_join(veg_by_pixel, by = "pixel") %>%
-  dplyr::filter(total_veg > 1)
-zero_perc(df$veg_binary)
-
 #----------------------------------------------------------------------------------------------------------------------
 # spatial and temporal decomposition
 
@@ -94,9 +48,6 @@ df <- df %>%
   dplyr::arrange(pixel, year)
 
 #----------------------------------------------------------------------------------------------------------------------
-# check correlations
-# set the threshold for highlighting high correlations
-cor_check(threshold = .7, df = df, var_list = c(decomp_vars, no_decomp_vars))
 # now do this for the decomposed variables
 decomp_spatial <- paste0(decomp_vars, "_spatial")
 decomp_temporal <- paste0(decomp_vars, "_temporal")
@@ -105,17 +56,7 @@ decomp_residual <- paste0(decomp_vars, "_residual")
 all_decomp_vars <- c(decomp_spatial, decomp_temporal, decomp_residual)
 cor_check(threshold = .7, df = df, var_list = c(all_decomp_vars, no_decomp_vars))
 
-# remove highly correlated variables and recheck
-rf_vars <- c("Aspect", 
-             "icefree_area_ratio",
-             "temperature_2m", 
-             "uv_radiation", 
-             "volumetric_soil_water",
-             "runoff",
-             "X10m_wind_speed",
-             "precipitation",
-             "vapor_pressure_deficit")
-cor_check(threshold = .7, df = df, var_list = rf_vars)
+
 rf_vars <- c("temperature_2m", 
              "uv_radiation", 
              "icefree_area_ratio",
@@ -128,8 +69,6 @@ decomp_spatial <- paste0(rf_vars, "_spatial")
 decomp_temporal <- paste0(rf_vars, "_temporal")
 decomp_residual <- paste0(rf_vars, "_residual")
 rf_vars_decomp <- c("Aspect", decomp_spatial, decomp_temporal, decomp_residual)
-cor_check(threshold = .7, df = df, var_list = rf_vars)
-rf_vars_decomp
 
 #----------------------------------------------------------------------------------------------------------------------
 # do a simple training test split

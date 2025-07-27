@@ -1,6 +1,6 @@
 # Antarctic_Greening_and_Its_Drivers
 
-The MODIS data can be downloaded from GEE following the method section in the manuscript uising dataset "MCD43A4.061 MODIS Nadir BRDF-Adjusted Reflectance Daily 500m".
+The MODIS data can be downloaded from GEE following the method section in the manuscript using dataset "MCD43A4.061 MODIS Nadir BRDF-Adjusted Reflectance Daily 500m".
 
 The decomposition process of the environmental data can be found in "1-preprocess_rf_data.R".
 

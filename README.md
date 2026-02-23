@@ -25,8 +25,8 @@ This repository contains code and notebooks for mapping Antarctic greenness (MOD
 - `SM_DART_Visualization_Ice_vs_Minimum_Vegetation.ipynb`
 - `SM_DART_Visualization_View_Az_Angle.ipynb`
 - `SM_Land_Cover.ipynb`
-- `DEM_Generation.ipynb` — DEM preparation / generation steps  
-- `SM_DEM.ipynb` — Supplementary DEM-related checks/plots
+- `DEM_Generation.ipynb`
+- `SM_DEM.ipynb`
 - `Visualization of MODIS LC and CC.ipynb`
 - `Simulation of LC Map.ipynb`
 - `SM_Duration_Day_Count.ipynb`

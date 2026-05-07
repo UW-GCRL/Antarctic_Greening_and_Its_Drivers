@@ -10,8 +10,9 @@ This repository contains code and notebooks for mapping Antarctic greenness (MOD
 
 - `RF_continent.py` — Random Forest modeling at the continental scale  
 - `RF_region.py` — Random Forest modeling at the regional scale  
-- `Detrend_continent.py` — Detrending-based attribution (continent)  
-- `Detrend_region.py` — Detrending-based attribution (regions)  
+- `Detrend_continent.py` — Detrending-based attribution (continent, legacy anchor-at-2002)  
+- `Detrend_region.py` — Detrending-based attribution (regions, legacy anchor-at-2002)  
+- `shapley_attribution/` — **Shapley-based driver attribution pipeline** (data-driven; supersedes the legacy detrending). Per-pixel-centered detrending of the eight climate variables, all 256 detrending coalitions evaluated through the trained RF, and exact Shapley values fairly partition each variable's contribution to the modeled continental and regional greening trend. See `shapley_attribution/README.md` for usage.
 - `1-preprocess_rf_data.R` — Environmental driver preprocessing + decomposition (used as RF inputs)
 - `Antarctic_NDVI_DIY_NBAR.ipynb` — NDVI workflow based on MODIS NBAR reflectance  
 - `Antarctic_greening_mapping.ipynb` — Greening mapping / product generation  

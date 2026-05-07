@@ -17,6 +17,7 @@ This repository contains code and notebooks for mapping Antarctic greenness (MOD
 - `Antarctic_NDVI_DIY_NBAR.ipynb` — NDVI workflow based on MODIS NBAR reflectance  
 - `Antarctic_greening_mapping.ipynb` — Greening mapping / product generation  
 - `MODIS_Area_Rock&DEM&Lat_Map.ipynb` — Supporting maps (area/rock/DEM/lat)  
+- `First_Last_NDVI.js` — GEE script generating First/Last DOY of NDVI>0.2
 - `Duration using last and first.ipynb` — Duration calculation
 - `Download ERA5.ipynb` — ERA5 download helper notebook  
 - `Process ERA5 data to tif.ipynb` — Convert/process ERA5 data into GeoTIFFs
